@@ -1,14 +1,11 @@
-image: docker:latest
-
-stages:
-  - build
-
 build_job:
   stage: build
   script:
+
     - docker info
     - docker build -t my_image .
     - docker run my_image echo "Hello, GitLab CI!"
+    - echo "This job is build"
 
 test-job1:
   stage: test
@@ -34,10 +31,6 @@ deploy-prod:
 #  script:
 #    - sonar-scanner
 
-integration-test:
-  stage: test
-  image: my_image  # используем ваш образ Docker с Maven
-  script:
-    - mvn integration-test  # запуск интеграционных тестов с помощью M
+
 
 

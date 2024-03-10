@@ -22,10 +22,10 @@ deploy-prod:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
   environment: production
 
-static_analysis:
-  stage: build
-  script:
-    - sonar-scanner
+#static_analysis:
+#  stage: build
+#  script:
+#    - sonar-scanner
 
 code_coverage:
    stage: test

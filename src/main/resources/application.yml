@@ -1,0 +1,29 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: eureka-employee-work-time
+  cloud:
+    stream:
+      kafka:
+        binder:
+          auto-add-partitions: true
+         # brokers: localhost:9092
+      bindings:
+        checkEmployeeEventProcessor-in-0:
+          destination: create-employee
+      checkEmployeeEventProcessor-out-0:
+      destination: salary-employee
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: workday
+logging:
+  level:
+    root: INFO
+management:
+    endpoints:
+      web:
+         exposure:
+            include: "*"

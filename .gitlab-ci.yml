@@ -2,7 +2,7 @@
 build_job:
   stage: build
   script:
-    - "This job is build"
+    - echo "This job is build"
  
 
 

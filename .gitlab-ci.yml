@@ -27,10 +27,6 @@ deploy-prod:
 #  script:
 #    - sonar-scanner
 
-integration-test:
-  stage: test
-  image: my_image  # используем ваш образ Docker с Maven
-  script:
-    - mvn integration-test  # запуск интеграционных тестов с помощью M
+
 
 

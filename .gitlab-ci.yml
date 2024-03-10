@@ -1,15 +1,7 @@
-image: docker:latest
-
-stages:
-  - build
-
-build_job:
+build-job:
   stage: build
   script:
-    - docker info
-    - docker build -t my_image .
-    - docker run my_image echo "Hello, GitLab CI!"
-
+    - echo "Hello, $GITLAB_USER_LOGIN!"
 
 test-job1:
   stage: test

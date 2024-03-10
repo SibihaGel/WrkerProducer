@@ -28,13 +28,13 @@ deploy-prod:
 #    - sonar-scanner
 
 code_coverage:
-   stage: test
-   script:
-    - ./gradlew test jacocoTestReport
+  stage: test
+  script:
+    - mvn clean test jacoco:report
 
 integration_tests:
   stage: test
   script:
-    - ./gradlew integrationTest
+    - mvn integration-test
 
 

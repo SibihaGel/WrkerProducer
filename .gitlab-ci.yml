@@ -3,7 +3,6 @@ build_job:
   script:
     - docker build -t my_image .
     - docker run my_image echo "Hello, GitLab CI!"
-    - echo "This job is build"
 
 test-job1:
   stage: test

@@ -1,4 +1,7 @@
+image: docker:latest
 
+stages:
+  - build
 
 build_job:
   stage: build

@@ -16,7 +16,7 @@ build job:
     - windows
   only:
     - merge_requests
-    - master
+    - main
   artifacts:
     paths:
       - your/path/to/binaries
@@ -30,7 +30,7 @@ test and cover job:
   coverage: /\|\s*Total\s*\|\s*(\d+[,.]\d+%)/
   only:
     - merge_requests
-    - master
+    - main
 
 pack and deploy job:
   stage: deploy
@@ -56,6 +56,6 @@ pages:
     paths:
       - public
   only:
-    - master
+    - main
 
 

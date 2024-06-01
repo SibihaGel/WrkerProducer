@@ -8,12 +8,15 @@ spring:
       kafka:
         binder:
           auto-add-partitions: true
-         # brokers: localhost:9092
+          brokers: localhost:9092
+          configuration:
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+            num.partitions: 4  # Установка количества партиций
       bindings:
         checkEmployeeEventProcessor-in-0:
           destination: create-employee
-      checkEmployeeEventProcessor-out-0:
-      destination: salary-employee
+        checkEmployeeEventProcessor-out-0:
+          destination: salary-employee
   data:
     mongodb:
       host: localhost
@@ -23,7 +26,7 @@ logging:
   level:
     root: INFO
 management:
-    endpoints:
-      web:
-         exposure:
-            include: "*"
+  endpoints:
+    web:
+      exposure:
+        include: "*"

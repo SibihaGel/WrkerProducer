@@ -27,24 +27,36 @@ services:
     image: elasticsearch:8.12.2
     container_name: elasticsearch
     restart: always
+
     ports:
       - '9200:9200'
-    environment:
-      - "discovery.type=single-node"
-      - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
+
+    #    environment:
+    #     - "xpack.security.enabled=false"
+    #     - "discovery.type: single-node"
+    #    - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
+
 
   logstash:
-   image: logstash:8.12.2
-   container_name: logstash
-   restart: always
+    image: logstash:8.12.2
+    container_name: logstash
+    restart: always
 
 
 
   kibana:
-      image: kibana:8.12.2
-      container_name: kibana
-      ports:
-        - '5601:5601'
+    image: kibana:8.12.2
+    container_name: kibana
+    # Default Kibana configuration for docker target
+    environment:
+      -xpack.security.enabled: false
+      -server.host: "0.0.0.0"
+      -server.shutdownTimeout: 10s
+      -elasticsearch.hosts: "https://elasticsearch:9200"
+      -monitoring.ui.container.elasticsearch.enabled: true
+
+    ports:
+      - '5601:5601'
 
   postgres:
     image: postgres:12-beta4-alpine
@@ -53,3 +65,34 @@ services:
       POSTGRES_PASSWORD: "Casella2011"
     ports:
       - '5435:5432'
+
+  storage:
+        image: openzipkin/zipkin-mysql
+        container_name: mysql
+        # Uncomment to expose the storage port for testing
+        # ports:
+        #   - 3306:3306
+
+      # The zipkin process services the UI, and also exposes a POST endpoint that
+      # instrumentation can send trace data to. Scribe is disabled by default.
+  zipkin:
+        image: openzipkin/zipkin
+        container_name: zipkin
+        # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+        environment:
+          - STORAGE_TYPE=mysql
+          # Point the zipkin at the storage backend
+          - MYSQL_HOST=mysql
+          # Uncomment to enable scribe
+          # - SCRIBE_ENABLED=true
+          # Uncomment to enable self-tracing
+          # - SELF_TRACING_ENABLED=true
+          # Uncomment to enable debug logging
+          # - JAVA_OPTS=-Dlogging.level.zipkin2=DEBUG
+        ports:
+          # Port used for the Zipkin UI and HTTP Api
+          - 9411:9411
+          # Uncomment if you set SCRIBE_ENABLED=true
+          # - 9410:9410
+        depends_on:
+          - storage

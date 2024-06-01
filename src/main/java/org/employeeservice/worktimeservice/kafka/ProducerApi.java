@@ -12,12 +12,27 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.employeeservice.worktimeservice.model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
+
+
+/* Создаем новый топик
+ * kafka-topics --bootstrap-server localhost:9092 --create --topic new-demo-topic --replication-factor 1 --partitions 4
+
+* выводим список топиков
+*
+* kafka-topics --bootstrap-server localhost:9092 --list
+ *
+ * выводи инфо о партициях
+ *
+ * kafka-topics --bootstrap-server localhost:9092 --describe --topic demo-topic
+
+ *  */
+
 
 @Service
 @AllArgsConstructor
@@ -25,7 +40,11 @@ public class ProducerApi {
 
     private final LinkedList<Employee> employeesCreationEvents;
     final String BOOTSTRAP_SERVER = "127.0.0.1:9092";
-    final String TOPIC_NAME = "demo-topic";
+    final String TOPIC_NAME = "new-demo-topic";
+
+
+    final int NUM_PARTITIONS = 4;
+
     final int MESSAGES_NUMBER = 1000;
 
 
@@ -39,6 +58,8 @@ public class ProducerApi {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVER);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty("num.partitions", String.valueOf(NUM_PARTITIONS));
+
 
         // Create Producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
@@ -79,7 +100,7 @@ public class ProducerApi {
 
             // Observing Kafka round-robin feature
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -98,6 +119,7 @@ public class ProducerApi {
         employee.setFirstName("first");
         employee.setLastName("second");
         employee.setSurname("three");
+        employee.setLogoutTime(LocalDateTime.of(2024, 1, 1, 20, 0));
         employee.setLoginTime(LocalDateTime.now().plusHours(2));
 
 

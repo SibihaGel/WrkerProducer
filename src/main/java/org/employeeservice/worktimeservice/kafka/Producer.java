@@ -33,7 +33,7 @@ public class Producer {
     public static void main(String[] args) {
 
         final String BOOTSTRAP_SERVER = "127.0.0.1:9092";
-        final String TOPIC_NAME = "demo-topic";
+        final String TOPIC_NAME = "new-demo-topic";
         final int MESSAGES_NUMBER = 1000;
 
         // Initialize Logger
@@ -84,7 +84,7 @@ public class Producer {
 
             // Observing Kafka round-robin feature
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -100,9 +100,9 @@ public class Producer {
         Employee employee = new Employee();
         employee.setId(UUID.randomUUID().toString());
         employee.setLoginTime(LocalDateTime.now());
-        employee.setFirstName("first");
-        employee.setLastName("second");
-        employee.setSurname("three");
+        employee.setFirstName("FIRSRT");
+        employee.setLastName("SECOND");
+        employee.setSurname("THREE");
 
 
         return employee;
